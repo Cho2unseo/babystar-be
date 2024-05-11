@@ -9,6 +9,8 @@ build/
 /src/main/resources/application.yml
 /src/main/resources/application-aws.yml
 
+.DS_Store
+
 
 
 ### STS ###
