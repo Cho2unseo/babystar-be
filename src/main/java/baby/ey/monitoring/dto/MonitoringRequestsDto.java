@@ -1,15 +1,11 @@
-package baby.ey.diary.dto;
+package baby.ey.monitoring.dto;
 
 import lombok.Getter;
-
 import java.time.LocalDateTime;
 
 @Getter
-public class DiaryRequestsDto {
+public class MonitoringRequestsDto {
     private Long id;
-    private Long baby_id;
     private String content;
-    private String path;
     private LocalDateTime created;
-    private LocalDateTime modified;
 }
