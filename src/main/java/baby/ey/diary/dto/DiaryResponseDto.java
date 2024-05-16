@@ -17,7 +17,6 @@ public class DiaryResponseDto {
     private LocalDateTime created;
     private LocalDateTime modified;
 
-
     @Builder
     public DiaryResponseDto(Diary entity) {
         this.id = entity.getId();

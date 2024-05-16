@@ -16,9 +16,6 @@ public class Crying extends Timestamped {
     private Long id;
 
     @Column
-    private String path;
-
-    @Column
     private String content;
 
     @Column
@@ -26,7 +23,6 @@ public class Crying extends Timestamped {
 
     public Crying(CryingRequestsDto requestDto) {
         this.id = requestDto.getId();
-        this.path = requestDto.getPath();
         this.content = requestDto.getContent();
         this.created = LocalDateTime.now();
     }

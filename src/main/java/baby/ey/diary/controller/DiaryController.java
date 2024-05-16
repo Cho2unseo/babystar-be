@@ -4,11 +4,16 @@ import baby.ey.diary.dto.DiaryRequestsDto;
 import baby.ey.diary.dto.DiaryResponseDto;
 import baby.ey.diary.dto.SuccessResponseDto;
 import baby.ey.diary.service.DiaryService;
+import baby.ey.upload.service.AwsS3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -16,6 +21,7 @@ import java.util.List;
 @Tag(name = "Diary", description = "육아일기 API")
 public class DiaryController {
     private final DiaryService diaryService;
+    private final AwsS3Service awsS3Service;
 
     @GetMapping("/api/diary")
     @Operation(summary = "육아일기 조회", description = "육아일기 조회 후 리스트 반환 API")
@@ -25,13 +31,23 @@ public class DiaryController {
 
     @PostMapping("/api/post")
     @Operation(summary = "육아일기 작성", description = "육아일기 작성 API")
-    public DiaryResponseDto createDiary(@RequestBody DiaryRequestsDto requestDto) {
-        return diaryService.createDiary(requestDto);
+    public DiaryResponseDto createDiary(@RequestPart(value = "image", required = false) MultipartFile image, @Valid @RequestPart(value = "requestDto") DiaryRequestsDto requestDto) {
+        return diaryService.createDiary(image, requestDto);
     }
+
+    /*
+    @PostMapping("/api/post/image")
+    @Operation(summary = "육아일기 이미지 업로드", description = "육아일기 이미지 업로드 API")
+    public String uploadImage(@RequestParam("image") MultipartFile image) {
+        return diaryService.uploadImageToS3(image);
+    }
+
+     */
 
     @GetMapping("/api/diary/{id}")
     @Operation(summary = "육아일기 상세 조회", description = "육아일기 상세 조회 API")
-    public DiaryResponseDto getDiary(@PathVariable Long id) {
+    public DiaryResponseDto getDiary(@PathVariable Long id, @RequestBody DiaryRequestsDto diaryRequestsDto, MultipartFile file) throws Exception {
+        // String imgPath = awsS3Service.upload(file, "diary");
         return diaryService.getDiary(id);
     }
 
