@@ -35,27 +35,18 @@ public class DiaryController {
         return diaryService.createDiary(image, requestDto);
     }
 
-    /*
-    @PostMapping("/api/post/image")
-    @Operation(summary = "육아일기 이미지 업로드", description = "육아일기 이미지 업로드 API")
-    public String uploadImage(@RequestParam("image") MultipartFile image) {
-        return diaryService.uploadImageToS3(image);
-    }
-
-     */
-
     @GetMapping("/api/diary/{id}")
     @Operation(summary = "육아일기 상세 조회", description = "육아일기 상세 조회 API")
-    public DiaryResponseDto getDiary(@PathVariable Long id, @RequestBody DiaryRequestsDto diaryRequestsDto, MultipartFile file) throws Exception {
-        // String imgPath = awsS3Service.upload(file, "diary");
+    public DiaryResponseDto getDiary(@PathVariable Long id) throws Exception {
         return diaryService.getDiary(id);
     }
 
     @PutMapping("/api/diary/{id}")
-    @Operation(summary = "육아일기 수정", description = "육아일기 내용 및 수정일 변경 API")
-    public DiaryResponseDto updateDiary(@PathVariable Long id, @RequestBody DiaryRequestsDto requestDto) throws Exception {
-        return diaryService.updateDiary(id, requestDto);
+    @Operation(summary = "육아일기 수정", description = "육아일기 내용 및 이미지 변경 API, 변경 날짜 자동 저장")
+    public DiaryResponseDto updateDiary(@PathVariable Long id, @RequestPart(value = "image", required = false) MultipartFile image, @Valid @RequestPart(value = "requestDto") DiaryRequestsDto requestDto) throws Exception {
+        return diaryService.updateDiary(id, image, requestDto);
     }
+
 
     @DeleteMapping("/api/diary/{id}")
     @Operation(summary = "육아일기 삭제", description = "선택한 육아일기 삭제 API")

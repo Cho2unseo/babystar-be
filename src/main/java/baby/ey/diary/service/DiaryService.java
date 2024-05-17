@@ -71,10 +71,12 @@ public class DiaryService {
     }
 
     @Transactional
-    public DiaryResponseDto updateDiary(Long id, DiaryRequestsDto requestsDto) throws Exception {
+    public DiaryResponseDto updateDiary(Long id, MultipartFile image, DiaryRequestsDto requestsDto) throws Exception {
         Diary diary = diaryRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 일기가 없습니다.")
         );
+        String imagePath = uploadImageToS3(image);
+        requestsDto.setPath(imagePath);
         diary.update(requestsDto);
         return new DiaryResponseDto(diary);
     }
