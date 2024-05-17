@@ -19,6 +19,7 @@ public class UserResponseDto {
     private Date birthday;
     private Integer relation;
     private String babyid;
+    private String path;
     private LocalDateTime created;
     private LocalDateTime modified;
 
@@ -31,6 +32,7 @@ public class UserResponseDto {
         this.birthday = entity.getBirthday();
         this.relation = entity.getRelation();
         this.babyid = entity.getBabyid();
+        this.path = entity.getPath();
         this.created = LocalDateTime.now();
         this.modified = LocalDateTime.now();
     }

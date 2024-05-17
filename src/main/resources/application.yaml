@@ -8,6 +8,11 @@ spring:
     include: jwt, aws
   config:
     import: application-aws.yml
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 300MB
 
   thymeleaf:
     cache: false
@@ -16,6 +21,8 @@ cloud:
   aws:
     s3:
       bucket: ${BUCKET}
+      bucket.url: ${URL}
+
     stack.auto: false
     region.static: ap-northeast-2
     credentials:

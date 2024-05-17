@@ -35,6 +35,9 @@ public class User extends Timestamped {
     private String babyid;
 
     @Column
+    private String path;
+
+    @Column
     private LocalDateTime created;
 
     @Column
@@ -43,13 +46,42 @@ public class User extends Timestamped {
     public User(UserRequestsDto userRequestsDto) {
         this.id = userRequestsDto.getId();
         this.email = userRequestsDto.getEmail();
-        this.password = userRequestsDto.getPassword();
-        this.nickname = userRequestsDto.getNickname();
-        this.birthday = userRequestsDto.getBirthday();
-        this.relation = userRequestsDto.getRelation();
-        this.babyid = userRequestsDto.getBabyid();
+        this.password = userRequestsDto.getPassword().orElse(null);
+        this.nickname = userRequestsDto.getNickname().orElse(null);
+        this.birthday = userRequestsDto.getBirthday().orElse(null);
+        this.relation = userRequestsDto.getRelation().orElse(null);
+        this.babyid = userRequestsDto.getBabyid().orElse(null);
+        this.path = userRequestsDto.getPath().orElse(null);
         this.created = LocalDateTime.now();
         this.modified = LocalDateTime.now();
+    }
+
+    public void update(UserRequestsDto userRequestsDto) {
+        userRequestsDto.getPassword().ifPresent(this::setPassword);
+        userRequestsDto.getBirthday().ifPresent(this::setBirthday);
+        userRequestsDto.getRelation().ifPresent(this::setRelation);
+        userRequestsDto.getBabyid().ifPresent(this::setBabyid);
+        userRequestsDto.getPath().ifPresent(this::setPath);
+        this.modified = LocalDateTime.now();
+    }
+
+    private void setPassword(String password) {
+        this.password = password;
+    }
+
+    private void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    private void setRelation(Integer relation) {
+        this.relation = relation;
+    }
+
+    private void setBabyid(String babyid) {
+        this.babyid = babyid;
+    }
+    private void setPath(String path) {
+        this.path = path;
     }
 
 }

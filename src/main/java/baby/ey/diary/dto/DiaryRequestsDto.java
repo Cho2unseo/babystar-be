@@ -1,10 +1,10 @@
 package baby.ey.diary.dto;
 
 import lombok.Getter;
-
 import java.time.LocalDateTime;
 
 @Getter
+
 public class DiaryRequestsDto {
     private Long id;
     private Long baby_id;
@@ -12,4 +12,8 @@ public class DiaryRequestsDto {
     private String path;
     private LocalDateTime created;
     private LocalDateTime modified;
+
+    public void setPath(String imagePath) {
+        this.path = imagePath;
+    }
 }

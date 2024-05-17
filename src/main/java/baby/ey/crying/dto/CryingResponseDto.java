@@ -11,14 +11,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CryingResponseDto {
     private Long id;
-    private String path;
     private String content;
     private LocalDateTime created;
 
     @Builder
     public CryingResponseDto(Crying entity) {
         this.id = entity.getId();
-        this.path = entity.getPath();
         this.content = entity.getContent();
         this.created = LocalDateTime.now();
     }

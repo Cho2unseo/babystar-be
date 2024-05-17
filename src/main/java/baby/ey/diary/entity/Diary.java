@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.sql.Blob;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 public class Diary extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +34,7 @@ public class Diary extends Timestamped {
     @Column
     private LocalDateTime modified;
 
-    // 이미지 추가
-
+    @Builder
     public Diary(DiaryRequestsDto requestsDto) {
         this.id = requestsDto.getId();
         this.baby_id = requestsDto.getBaby_id();
@@ -47,5 +48,9 @@ public class Diary extends Timestamped {
         this.content = requestsDto.getContent();
         this.path = requestsDto.getPath();
         this.modified = LocalDateTime.now();
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
