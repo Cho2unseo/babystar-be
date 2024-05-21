@@ -50,8 +50,8 @@ public class DiaryController {
 
     @DeleteMapping("/api/diary/{id}")
     @Operation(summary = "육아일기 삭제", description = "선택한 육아일기 삭제 API")
-    public SuccessResponseDto deleteDiary(@PathVariable Long id, @RequestBody DiaryRequestsDto requestDto) throws Exception {
-        return diaryService.deleteDiary(id, requestDto);
+    public SuccessResponseDto deleteDiary(@PathVariable Long id) throws Exception {
+        return diaryService.deleteDiary(id);
     }
 
 

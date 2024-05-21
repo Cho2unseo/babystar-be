@@ -82,7 +82,7 @@ public class DiaryService {
     }
 
     @Transactional
-    public SuccessResponseDto deleteDiary(Long id, DiaryRequestsDto diaryRequestsDto) throws Exception {
+    public SuccessResponseDto deleteDiary(Long id) throws Exception {
         diaryRepository.deleteById(id);
         return new SuccessResponseDto(true);
     }
