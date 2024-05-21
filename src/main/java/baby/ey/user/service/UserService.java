@@ -32,17 +32,17 @@ public class UserService {
         return "profile/" + random + originName;
     }
 
-    private String uploadImageToS3(MultipartFile image) {
+    private String uploadImageToS3(MultipartFile image) throws IOException {
+        if (image == null || image.isEmpty()) {
+            return null;
+        }
         String originName = image.getOriginalFilename();
         String ext = originName.substring(originName.lastIndexOf("."));
         String changedName = changedImageName(originName);
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType("image/" + ext);
-        try {
-            PutObjectResult putObjectResult = amazonS3.putObject(new PutObjectRequest(bucket, changedName, image.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       amazonS3.putObject(new PutObjectRequest(bucket, changedName, image.getInputStream(), metadata)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
         return amazonS3.getUrl(bucket, changedName).toString();
     }
 
@@ -53,9 +53,11 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto createUser(MultipartFile image, UserRequestsDto userRequestsDto) {
+    public UserResponseDto createUser(MultipartFile image, UserRequestsDto userRequestsDto) throws IOException {
         String imagePath = uploadImageToS3(image);
-        userRequestsDto.setPath(imagePath);
+        if (imagePath != null) {
+            userRequestsDto.setPath(imagePath);
+        }
         User user = new User(userRequestsDto);
         userRepository.save(user);
         return new UserResponseDto(user);
@@ -74,7 +76,9 @@ public class UserService {
                 () -> new IllegalArgumentException("해당 가입 정보가 없습니다.")
         );
         String imagePath = uploadImageToS3(image);
-        userRequestsDto.setPath(imagePath);
+        if (imagePath != null) {
+            userRequestsDto.setPath(imagePath);
+        }
         user.update(userRequestsDto);
         return new UserResponseDto(user);
     }

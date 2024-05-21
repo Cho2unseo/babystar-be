@@ -31,7 +31,7 @@ public class DiaryController {
 
     @PostMapping("/api/post")
     @Operation(summary = "육아일기 작성", description = "육아일기 작성 API")
-    public DiaryResponseDto createDiary(@RequestPart(value = "image", required = false) MultipartFile image, @Valid @RequestPart(value = "requestDto") DiaryRequestsDto requestDto) {
+    public DiaryResponseDto createDiary(@RequestPart(value = "image", required = false) MultipartFile image, @Valid @RequestPart(value = "requestDto") DiaryRequestsDto requestDto) throws IOException {
         return diaryService.createDiary(image, requestDto);
     }
 
