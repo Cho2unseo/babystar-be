@@ -29,7 +29,7 @@ public class UserController {
 
     @PostMapping("/api/signup")
     @Operation(summary = "회원가입", description = "회원가입 API")
-    public UserResponseDto createUser(@RequestPart(value = "image", required = false) MultipartFile image, @Valid @RequestPart(value = "requestDto") UserRequestsDto userRequestsDto) {
+    public UserResponseDto createUser(@RequestPart(value = "image", required = false) MultipartFile image, @Valid @RequestPart(value = "requestDto") UserRequestsDto userRequestsDto) throws IOException {
         return userService.createUser(image, userRequestsDto);
     }
 

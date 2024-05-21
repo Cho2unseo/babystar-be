@@ -34,17 +34,17 @@ public class DiaryService {
         return "diary/" + random + originName;
     }
 
-    private String uploadImageToS3(MultipartFile image) {
+    private String uploadImageToS3(MultipartFile image) throws IOException {
+        if (image == null || image.isEmpty()) {
+            return null;
+        }
         String originName = image.getOriginalFilename();
         String ext = originName.substring(originName.lastIndexOf("."));
         String changedName = changedImageName(originName);
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType("image/" + ext);
-        try {
-            PutObjectResult putObjectResult = amazonS3.putObject(new PutObjectRequest(bucket, changedName, image.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        amazonS3.putObject(new PutObjectRequest(bucket, changedName, image.getInputStream(), metadata)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
         return amazonS3.getUrl(bucket, changedName).toString();
     }
 
@@ -55,9 +55,11 @@ public class DiaryService {
     }
 
     @Transactional
-    public DiaryResponseDto createDiary(MultipartFile image, DiaryRequestsDto requestDto) {
+    public DiaryResponseDto createDiary(MultipartFile image, DiaryRequestsDto requestDto) throws IOException {
         String imagePath = uploadImageToS3(image);
-        requestDto.setPath(imagePath);
+        if (imagePath != null) {
+            requestDto.setPath(imagePath);
+        }
         Diary diary = new Diary(requestDto);
         diaryRepository.save(diary);
         return new DiaryResponseDto(diary);
@@ -76,7 +78,9 @@ public class DiaryService {
                 () -> new IllegalArgumentException("해당 일기가 없습니다.")
         );
         String imagePath = uploadImageToS3(image);
-        requestsDto.setPath(imagePath);
+        if (imagePath != null) {
+            requestsDto.setPath(imagePath);
+        }
         diary.update(requestsDto);
         return new DiaryResponseDto(diary);
     }
