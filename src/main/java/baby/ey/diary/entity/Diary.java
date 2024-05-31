@@ -49,8 +49,4 @@ public class Diary extends Timestamped {
         this.path = requestsDto.getPath();
         this.modified = LocalDateTime.now();
     }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
 }
