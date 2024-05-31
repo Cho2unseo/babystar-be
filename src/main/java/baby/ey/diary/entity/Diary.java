@@ -5,15 +5,18 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.sql.Blob;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 public class Diary extends Timestamped {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -22,15 +25,28 @@ public class Diary extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    // 이미지 추가
+    @Column
+    private String path;
 
+    @Column
+    private LocalDateTime created;
+
+    @Column
+    private LocalDateTime modified;
+
+    @Builder
     public Diary(DiaryRequestsDto requestsDto) {
         this.id = requestsDto.getId();
         this.baby_id = requestsDto.getBaby_id();
         this.content = requestsDto.getContent();
+        this.path = requestsDto.getPath();
+        this.created = LocalDateTime.now();
+        this.modified = LocalDateTime.now();
     }
 
     public void update(DiaryRequestsDto requestsDto) {
         this.content = requestsDto.getContent();
+        this.path = requestsDto.getPath();
+        this.modified = LocalDateTime.now();
     }
 }

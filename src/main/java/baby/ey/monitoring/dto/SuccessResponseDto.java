@@ -1,8 +1,4 @@
-package baby.ey.diary.dto;
-
-import lombok.Getter;
-
-@Getter
+package baby.ey.monitoring.dto;
 
 public class SuccessResponseDto {
     private boolean success;

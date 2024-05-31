@@ -1,30 +1,35 @@
-package baby.ey.diary.dto;
+package baby.ey.baby.dto;
 
-import baby.ey.diary.entity.Diary;
+import baby.ey.baby.entity.Baby;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class DiaryResponseDto {
+
+public class BabyResponseDto {
     private Long id;
-    private Long baby_id;
-    private String content;
+    private String babyid;
     private String path;
+    private String name;
+    private Date birthday;
+    private Integer gender;
     private LocalDateTime created;
     private LocalDateTime modified;
 
     @Builder
-    public DiaryResponseDto(Diary entity) {
+    public BabyResponseDto(Baby entity) {
         this.id = entity.getId();
-        this.baby_id = entity.getBaby_id();
-        this.content = entity.getContent();
+        this.babyid = entity.getBabyid();
         this.path = entity.getPath();
+        this.name = entity.getName();
+        this.birthday = entity.getBirthday();
+        this.gender = entity.getGender();
         this.created = entity.getCreated();
         this.modified = entity.getModified();
     }
-
 }
