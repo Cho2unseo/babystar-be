@@ -10,8 +10,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
     List<Diary> findAllByOrderByCreatedDesc();
+    Optional<Diary> findTopByOrderByCreatedDesc();
 }
