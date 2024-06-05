@@ -10,15 +10,15 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
-import java.awt.image.ImagingOpException;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +30,7 @@ public class DiaryService {
     private final AmazonS3 amazonS3;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+
     private String changedImageName(String originName) {
         String random = UUID.randomUUID().toString();
         return "diary/" + random + originName;
@@ -102,9 +103,21 @@ public class DiaryService {
     @Transactional
     public void processAnalysisResult(AnalysisResultDto analysisResultDto) {
         // 분석 결과를 처리하는 로직 추가
-        // 예: 데이터베이스에 저장하거나 다른 비즈니스 로직 수행
-        System.out.println("Received analysis result: " + analysisResultDto.getResult());
+        ObjectMapper objectMapper = new ObjectMapper();
+        String filePath = "C:/Users/smyj0/study/hello-spirng/BE/src/main/java/baby/ey/diary/analysis_result.json";
+
+        try {
+            // AnalysisResultDto 객체를 JSON 문자열로 변환
+            String jsonString = objectMapper.writeValueAsString(analysisResultDto);
+
+            // JSON 문자열을 파일에 저장
+            FileWriter fileWriter = new FileWriter(filePath);
+            fileWriter.write(jsonString);
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // 추가 로직 작성...
     }
-
 }

@@ -6,10 +6,12 @@ import baby.ey.diary.dto.DiaryResponseDto;
 import baby.ey.diary.dto.SuccessResponseDto;
 import baby.ey.diary.service.DiaryService;
 import baby.ey.upload.service.AwsS3Service;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +28,8 @@ import java.util.Map;
 public class DiaryController {
     private final DiaryService diaryService;
     private final AwsS3Service awsS3Service;
+    private final ObjectMapper objectMapper;
+
 
     @GetMapping("/api/diary")
     @Operation(summary = "육아일기 조회", description = "육아일기 조회 후 리스트 반환 API")
@@ -70,10 +74,13 @@ public class DiaryController {
     @PostMapping("/api/analysis")
     @Operation(summary = "분석 결과 수신", description = "Flask 애플리케이션으로부터 분석 결과를 수신하는 API")
     public Map<String, String> receiveAnalysisResult(@RequestBody AnalysisResultDto analysisResultDto) {
-        // 분석 결과를 로컬 파일 시스템에 저장하는 로직 추가
-        String filePath = "C:/Users/smyj0/study/hello-spirng/BE/src/main/java/baby/ey/diaryanalysis_result.json";
+        System.out.println("Received Analysis Result: " + analysisResultDto);
+
+        String filePath = "C:/Users/smyj0/study/hello-spirng/BE/src/main/java/baby/ey/diary/analysis_result.json";
         try (FileWriter file = new FileWriter(filePath)) {
-            file.write(analysisResultDto.toJson()); // JSON 형식으로 저장
+            // JSON 형식으로 저장
+            String jsonString = objectMapper.writeValueAsString(analysisResultDto);
+            file.write(jsonString);
             file.flush();
         } catch (IOException e) {
             e.printStackTrace();
