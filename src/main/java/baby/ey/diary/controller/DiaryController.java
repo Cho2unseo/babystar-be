@@ -5,6 +5,7 @@ import baby.ey.diary.dto.DiaryRequestsDto;
 import baby.ey.diary.dto.DiaryResponseDto;
 import baby.ey.diary.dto.SuccessResponseDto;
 import baby.ey.diary.service.DiaryService;
+import baby.ey.diary.service.JsonToDatabaseService;
 import baby.ey.upload.service.AwsS3Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +13,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +32,7 @@ public class DiaryController {
     private final DiaryService diaryService;
     private final AwsS3Service awsS3Service;
     private final ObjectMapper objectMapper;
+    private JsonToDatabaseService jsonToDatabaseService;
 
 
     @GetMapping("/api/diary")
@@ -97,5 +101,14 @@ public class DiaryController {
         return response;
     }
 
+    @PostMapping("/upload-json")
+    public ResponseEntity<String> uploadJson(@RequestParam("filePath") String filePath) {
+        try {
+            jsonToDatabaseService.saveJsonToDatabase(filePath);
+            return ResponseEntity.ok("JSON data saved to database successfully.");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
+        }
+    }
 
 }
