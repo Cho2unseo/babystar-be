@@ -80,7 +80,7 @@ public class DiaryController {
     public Map<String, String> receiveAnalysisResult(@RequestBody AnalysisResultDto analysisResultDto) {
         System.out.println("Received Analysis Result: " + analysisResultDto);
 
-        String filePath = "C:/Users/smyj0/study/hello-spirng/BE/src/main/java/baby/ey/diary/analysis_result.json";
+        String filePath = "/Users/eunseo/Desktop/studyspring/5ey/src/main/java/baby/ey/diary/analysis_result.json";
         try (FileWriter file = new FileWriter(filePath)) {
             // JSON 형식으로 저장
             String jsonString = objectMapper.writeValueAsString(analysisResultDto);

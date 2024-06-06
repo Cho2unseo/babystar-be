@@ -10,6 +10,5 @@ import java.util.Optional;
 @Repository
 public interface GrowthRepository extends JpaRepository<Growth, Integer> {
     List<Growth> findAllByOrderByCreatedDesc();
-    Optional<Growth> findTopByOrderByCreatedDesc();
 }
 

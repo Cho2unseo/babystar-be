@@ -34,7 +34,7 @@ public class FileWatcherService {
     private final SleepRepository sleepRepository;
     private final ObjectMapper objectMapper;
 
-    private static final String DIRECTORY_PATH = "C:/Users/smyj0/study/hello-spirng/BE/src/main/java/baby/ey/diary";
+    private static final String DIRECTORY_PATH = "/Users/eunseo/Desktop/studyspring/5ey/src/main/java/baby/ey/diary";
 
     @EventListener(ApplicationReadyEvent.class)
     public void watchDirectory() {
