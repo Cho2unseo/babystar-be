@@ -104,7 +104,7 @@ public class DiaryService {
     public void processAnalysisResult(AnalysisResultDto analysisResultDto) {
         // 분석 결과를 처리하는 로직 추가
         ObjectMapper objectMapper = new ObjectMapper();
-        String filePath = "C:/Users/smyj0/study/hello-spirng/BE/src/main/java/baby/ey/diary/analysis_result.json";
+        String filePath = "/Users/eunseo/Desktop/studyspring/5ey/src/main/java/baby/ey/diary/analysis_result.json";
 
         try {
             // AnalysisResultDto 객체를 JSON 문자열로 변환
